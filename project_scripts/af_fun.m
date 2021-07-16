@@ -1,4 +1,4 @@
-function [AF]=af_fun(N, alpha, d, theta)
+function [AF]=af_fun(N, alpha, d, beta, theta)
 
 % imaginary 
 j=sqrt(-1);
@@ -14,7 +14,8 @@ AF_init=zeros(N,length(theta));
 for m=1:N
     % from UOT lecture
     % calculate each array element factor
-    AF_init(m,:) = 0.5*exp(j*k*(m-1)*d(m)*cos(theta)+j*(m-1)*d(m)*alpha(m));
+    mag = exp(j*beta(m)*(m-1));
+    AF_init(m,:) = 1*exp(j*k*(m-1)*d(m)*cos(theta)+j*(m-1)*d(m)*alpha(m));
 end
 
 % calculate array factor

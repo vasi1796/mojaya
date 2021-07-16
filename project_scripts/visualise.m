@@ -1,6 +1,6 @@
-function [] = visualise(theta,N,sampleupdate_alpha,sampleupdate_d,min_angle,max_angle,tolerance,minSLL, final, it, goal, worst_SLL_it)
+function [] = visualise(theta,N,sampleupdate_alpha,sampleupdate_d,sampleupdate_beta,min_angle,max_angle,tolerance,minSLL, final, it, goal, worst_SLL_it)
     theta_deg = rad2deg(theta);
-    AF = af_fun(N, sampleupdate_alpha(1,:),sampleupdate_d(1,:),theta);
+    AF = af_fun(N, sampleupdate_alpha(1,:),sampleupdate_d(1,:),sampleupdate_beta(1,:),theta);
     subplot(2,1,1);
     plot(theta_deg,AF)
     
@@ -15,7 +15,7 @@ function [] = visualise(theta,N,sampleupdate_alpha,sampleupdate_d,min_angle,max_
     if final
         title('Log plot at final iteration');
     else
-        title(sprintf('Log plot at iteration spacing of %f', it));
+        title(sprintf('Log plot at iteration %f', it));
         pause(0.00001)
     end
     

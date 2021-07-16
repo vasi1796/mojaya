@@ -4,7 +4,7 @@ clear;
 clc;
 
 % number of iterations
-ita = 100; 
+ita = 500; 
 % population number
 pop = 10; 
 theta =0:0.02:pi; 
@@ -63,7 +63,7 @@ worst_alpha=zeros(ita,N);
 best_d=zeros(ita,N);
 worst_d=zeros(ita,N);
 
-worst_SLL_it=zeros(ita);
+worst_SLL_it=zeros(ita,1);
 
 %% Start optimization
 
@@ -81,7 +81,7 @@ end
 for m=1:ita
     
     % mojaya update process 
-    [ sampleupdate_alpha,sampleupdate_d] = updatepopulation(N,samplenow_alpha,samplenow_d,num_pop_SLL(m,:));
+    [ sampleupdate_alpha,sampleupdate_d] = updatepopulation(N,samplenow_alpha,samplenow_d,num_pop_SLL(m,:),pop);
     % clamp bounds of variables
     [ sampleupdate_alpha,sampleupdate_d] = trimr(alpha_min, alpha_max, d_min, d_max, sampleupdate_alpha, sampleupdate_d);
 

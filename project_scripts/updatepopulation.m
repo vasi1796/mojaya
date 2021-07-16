@@ -1,4 +1,4 @@
-function [ sampleupdate_alpha, sampleupdate_d]=updatepopulation(N,samplenow_alpha,samplenow_d,num_pop_SLL)
+function [ sampleupdate_alpha, sampleupdate_d]=updatepopulation(N,samplenow_alpha,samplenow_d,num_pop_SLL,pop)
   Tbest=find(num_pop_SLL==max(num_pop_SLL));
   Tworst=find(num_pop_SLL==min(num_pop_SLL));
   
@@ -8,8 +8,8 @@ function [ sampleupdate_alpha, sampleupdate_d]=updatepopulation(N,samplenow_alph
   worst_alpha=samplenow_alpha(Tworst(1),:);
   worst_d=samplenow_d(Tworst(1),:);
   
-  sampleupdate_alpha=zeros(10,N);
-  sampleupdate_d=zeros(10,N);
+  sampleupdate_alpha=zeros(pop,N);
+  sampleupdate_d=zeros(pop,N);
   
   for q=1:10
     ra=rand(1,2);

@@ -10,9 +10,9 @@ function [ sampleupdate_alpha, sampleupdate_d, sampleupdate_beta ]=updatepopulat
   worst_d=samplenow_d(Tworst(1),:);
   worst_beta=samplenow_beta(Tworst(1),:);
   
-  sampleupdate_alpha=zeros(pop,N);
-  sampleupdate_d=zeros(pop,N);
-  sampleupdate_beta=zeros(pop,N);
+%   sampleupdate_alpha=zeros(pop,N);
+%   sampleupdate_d=zeros(pop,N);
+%   sampleupdate_beta=zeros(pop,N);
   
   for q=1:10
     ra=rand(1,2);

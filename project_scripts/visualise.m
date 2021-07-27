@@ -1,6 +1,6 @@
-function [] = visualise(theta,N,sampleupdate_alpha,sampleupdate_d,sampleupdate_beta,min_angle,max_angle,minSLL, final, it, goal, worst_SLL_it,goal_ind)
+function [] = visualise(theta,N,sampleupdate_alpha,sampleupdate_d,sampleupdate_I,min_angle,max_angle,minSLL, final, it, goal, worst_SLL_it,goal_ind)
     theta_deg = rad2deg(theta);
-    AF = af_fun(N, sampleupdate_alpha(goal_ind,:),sampleupdate_d(goal_ind,:),sampleupdate_beta(goal_ind,:),theta);
+    AF = af_fun(N, sampleupdate_alpha(goal_ind,:),sampleupdate_d(goal_ind,:),sampleupdate_I(goal_ind,:),theta);
     subplot(2,1,1);
     plot(theta_deg,AF)
     

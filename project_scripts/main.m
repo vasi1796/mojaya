@@ -15,7 +15,7 @@ k0 = 2*pi/lambda;
 % SLL threshold
 minSLL=-10; 
 % tolerance in deg
-tolerance = 5;
+tolerance = 3;
 % (-12,-8) in (0,180) are (78,82)
 max_angle = 82+tolerance;
 min_angle = 78-tolerance;
@@ -42,6 +42,7 @@ goal=length(ind_v);
 % define phase shift, 
 % for left beam use negative domain
 % for right beam use positive domain
+% use bernoulli distribution 
 alpha_min=-pi;
 alpha_max=-pi/6;
 
@@ -61,13 +62,13 @@ end
 
 % define excitation value
 % NOT USED IN AF FUNC YET
-beta_min=0;
-beta_max=1;
+I_min=0;
+I_max=1;
 
 for i=1:pop
 
-betaMrx=beta_min+(beta_max-beta_min)*rand(N,1);
-samplenow_beta(i,1:length(betaMrx))=betaMrx;
+IMrx=I_min+(I_max-I_min)*rand(N,1);
+samplenow_I(i,1:length(IMrx))=IMrx;
 
 end
 
@@ -77,17 +78,18 @@ worst_alpha=zeros(ita,N);
 best_d=zeros(ita,N);
 worst_d=zeros(ita,N);
 
-best_beta=zeros(ita,N);
-worst_beta=zeros(ita,N);
+best_I=zeros(ita,N);
+worst_I=zeros(ita,N);
 
 % worst_SLL_it=zeros(ita,1);
+num_pop_SLL = zeros(ita+1,pop);
 
 %% Start optimization
 
 % initial run
-for k=1:pop 
+parfor k=1:pop 
 
-    AF = af_fun(N,samplenow_alpha(k,:),samplenow_d(k,:),samplenow_beta(k,:),theta);
+    AF = af_fun(N,samplenow_alpha(k,:),samplenow_d(k,:),samplenow_I(k,:),theta);
   
     % check how many data points are under db threshold
     z = checkSLL(ind_v,minSLL,AF);
@@ -103,18 +105,19 @@ goal_ind=1;
 for m=1:ita
     
     % mojaya update process 
-    [ sampleupdate_alpha,sampleupdate_d, sampleupdate_beta] = updatepopulation(N,samplenow_alpha,samplenow_d,samplenow_beta,num_pop_SLL(m,:),pop);
+    [ sampleupdate_alpha,sampleupdate_d, sampleupdate_I] = updatepopulation(N,samplenow_alpha,samplenow_d,samplenow_I,num_pop_SLL(m,:),pop);
     % clamp bounds of variables
-    [ sampleupdate_alpha,sampleupdate_d, sampleupdate_beta] = trimr(alpha_min, alpha_max, d_min, d_max,beta_min,beta_max, sampleupdate_alpha, sampleupdate_d, sampleupdate_beta);
+    [ sampleupdate_alpha,sampleupdate_d, sampleupdate_I] = trimr(alpha_min, alpha_max, d_min, d_max,I_min,I_max, sampleupdate_alpha, sampleupdate_d, sampleupdate_I);
 
-    for k=1:pop    
-    AF = af_fun(N, sampleupdate_alpha(k,:),sampleupdate_d(k,:),sampleupdate_beta(k,:),theta);
-    % check how many data points are under db threshold
-    num_pop_SLL(m+1,k) = checkSLL(ind_v,minSLL,AF);
+    parfor k=1:pop    
+        AF = af_fun(N, sampleupdate_alpha(k,:),sampleupdate_d(k,:),sampleupdate_I(k,:),theta);
+        % check how many data points are under db threshold
+        num_pop_SLL(m+1,k) = checkSLL(ind_v,minSLL,AF);
+        % elitism algorithm
         if num_pop_SLL(m+1,k)<num_pop_SLL(m,k)
             sampleupdate_alpha(k,:) = samplenow_alpha(k,:);
             sampleupdate_d(k,:) = samplenow_d(k,:);
-            sampleupdate_beta(k,:) = samplenow_beta(k,:);
+            sampleupdate_I(k,:) = samplenow_I(k,:);
             num_pop_SLL(m+1,k) = num_pop_SLL(m,k);
         end
         % Stop condition
@@ -128,14 +131,14 @@ for m=1:ita
     end
     samplenow_alpha = sampleupdate_alpha;
     samplenow_d = sampleupdate_d; 
-    samplenow_beta = sampleupdate_beta;
+    samplenow_beta = sampleupdate_I;
     SLL_at_it(m) = max(num_pop_SLL(m,:));
     
     % used for step by step visualisation
-    % visualise(theta,N,sampleupdate_alpha,sampleupdate_d,sampleupdate_beta,min_angle,max_angle,minSLL, 0, m, goal, worst_SLL_it,goal_ind)
+    % visualise(theta,N,sampleupdate_alpha,sampleupdate_d,sampleupdate_I,min_angle,max_angle,minSLL, 0, m, goal, SLL_at_it,goal_ind)
 end
 
 %% Plot radiation pattern of optimal solution
 
-visualise(theta,N,sampleupdate_alpha,sampleupdate_d,sampleupdate_beta,min_angle,max_angle,minSLL, 1, ita, goal, SLL_at_it, goal_ind)
+visualise(theta,N,sampleupdate_alpha,sampleupdate_d,sampleupdate_I,min_angle,max_angle,minSLL, 1, ita, goal, SLL_at_it, goal_ind)
 

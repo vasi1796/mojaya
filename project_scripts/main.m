@@ -85,7 +85,7 @@ num_pop_SLL = zeros(ita+1,pop);
 %% Start optimization
 
 % initial run
-parfor k=1:pop 
+for k=1:pop 
 
     AF = af_fun(N,samplenow_alpha(k,:),samplenow_d(k,:),samplenow_I(k,:),theta);
   
@@ -124,9 +124,9 @@ for m=1:ita
             goal_ind = k;
         end
     end
-    if stop
-        break
-    end
+%     if stop
+%         break
+%     end
     samplenow_alpha = sampleupdate_alpha;
     samplenow_d = sampleupdate_d; 
     samplenow_beta = sampleupdate_I;

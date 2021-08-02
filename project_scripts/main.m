@@ -1,5 +1,5 @@
 %% Initialise paper variables
-
+rng('default')
 clear; 
 clc;
 
@@ -40,14 +40,12 @@ ind_v=nonzeros(ind_v)';
 goal=length(ind_v);
 
 % define phase shift, 
-% for left beam use negative domain
-% for right beam use positive domain
-% use bernoulli distribution 
+% use mixture model distribution 
 alpha_min=-pi;
 alpha_max=-pi/6;
 
 for i=1:pop
-    alphaMrx=alpha_min+(alpha_max-alpha_min)*rand(N,1);
+    alphaMrx=mixture_sample(N);
     samplenow_alpha(i,1:length(alphaMrx))=alphaMrx;
 end
 
@@ -109,7 +107,7 @@ for m=1:ita
     % clamp bounds of variables
     [ sampleupdate_alpha,sampleupdate_d, sampleupdate_I] = trimr(alpha_min, alpha_max, d_min, d_max,I_min,I_max, sampleupdate_alpha, sampleupdate_d, sampleupdate_I);
 
-    parfor k=1:pop    
+    for k=1:pop    
         AF = af_fun(N, sampleupdate_alpha(k,:),sampleupdate_d(k,:),sampleupdate_I(k,:),theta);
         % check how many data points are under db threshold
         num_pop_SLL(m+1,k) = checkSLL(ind_v,minSLL,AF);

@@ -14,7 +14,7 @@ AF_init=zeros(N,length(theta));
 for m=1:N
     % from UOT lecture
     % calculate each array element factor
-    AF_init(m,:) = 1*exp(j*k*(m-1)*d(m)*cos(theta)+j*(m-1)*alpha(m));
+    AF_init(m,:) = I(m)*exp(j*k*(m-1)*d(m)*cos(theta)+j*(m-1)*alpha(m));
 end
 
 % calculate array factor

@@ -7,7 +7,7 @@ clc;
 ita = 1000; 
 % population number
 pop = 10; 
-theta =0:0.02:pi; 
+theta =0:0.005:pi; 
 c = 3e8;
 f = 15e9;
 lambda = c/f;
@@ -15,7 +15,7 @@ k0 = 2*pi/lambda;
 % SLL threshold
 minSLL=-10; 
 % tolerance in deg
-tolerance = 3;
+tolerance = 1;
 % (-12,-8) in (0,180) are (78,82)
 max_angle = 82+tolerance;
 min_angle = 78-tolerance;
@@ -59,7 +59,6 @@ for i=1:pop
 end
 
 % define excitation value
-% NOT USED IN AF FUNC YET
 I_min=0;
 I_max=1;
 
@@ -124,9 +123,9 @@ for m=1:ita
             goal_ind = k;
         end
     end
-%     if stop
-%         break
-%     end
+    if stop
+        break
+    end
     samplenow_alpha = sampleupdate_alpha;
     samplenow_d = sampleupdate_d; 
     samplenow_beta = sampleupdate_I;

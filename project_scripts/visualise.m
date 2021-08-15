@@ -6,6 +6,8 @@ function [] = visualise(theta,N,sampleupdate_alpha,sampleupdate_d,sampleupdate_I
     
     xline(min_angle,'g');
     xline(max_angle,'b');
+    xline(57,'g');
+    xline(63,'b');
     yline(minSLL,'-r');
     legend('Radiation pattern','Lower angle limit','Higher angle limit','SLL limit');
     grid;
@@ -23,7 +25,7 @@ function [] = visualise(theta,N,sampleupdate_alpha,sampleupdate_d,sampleupdate_I
     error = goal - worst_SLL_it;
     plot(error);
     grid;
-    title('Error plot');
+    title('Objective function plot');
     xlabel('Iteration number');
     ylabel('Error [indices under the SLL threshold]');
     

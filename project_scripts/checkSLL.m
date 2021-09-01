@@ -1,4 +1,4 @@
-function [obj_fun,z_1,z_2]=checkSLL(ind_v,minSLL,AF,ind_w)
+function [obj_fun,z_1,z_2]=checkSLL(ind_v,minSLL,AF,ind_w,w_1,w_2)
    %scan AF;
    z_1=0;
    z_2=0;
@@ -15,5 +15,5 @@ function [obj_fun,z_1,z_2]=checkSLL(ind_v,minSLL,AF,ind_w)
        end          
    end
    % weighted sum objective function
-   obj_fun=0.1*z_1+0.9*z_2;
+   obj_fun=w_1*z_1+w_2*z_2;
 end

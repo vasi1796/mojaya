@@ -11,7 +11,7 @@ function [ sampleupdate_alpha, sampleupdate_d, sampleupdate_I ]=updatepopulation
   worst_beta=samplenow_I(Tworst(1),:);
   
   for q=1:10
-    ra=rand(1,2);
+    ra=mixture_sample(2)';
     rc=rand(1,2);
     rb=rand(1,2);
  
